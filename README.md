@@ -25,14 +25,14 @@ https://indadady.github.io/260903_Taebaek/
 ## Notes
 
 - GA4: `G-JLH9GD9SVR`
-- 로컬 이미지 경로 예정:
+- 로컬 이미지 반영:
   - `assets/images/hero.jpg`
   - `assets/images/og-thumb.jpg`
   - `assets/images/day1-museum.jpg`
   - `assets/images/day1-yongyeon.jpg`
   - `assets/images/day2-gossi.jpg`
   - `assets/images/day2-baengnyong.jpg`
-  - `assets/images/hotel.jpg` (담당자 제공 URL 수신 후 반영)
+  - `assets/images/hotel.jpg`
 - HTML 본문에 견적/금액 정보는 포함하지 않음
 
 ## Deploy
