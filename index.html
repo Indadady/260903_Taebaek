@@ -343,7 +343,7 @@
                                 <div class="schedule-desc space-y-1">
                                     <p class="text-xs font-black text-cyan-600 tracking-widest">15:30 ~ 17:00</p>
                                     <h4 class="font-bold text-lg text-slate-800">영월 숙소 이동</h4>
-                                    <p class="text-sm text-slate-500 leading-relaxed">영월 숙박지로 이동합니다. 숙소는 탑스텐 동강시스타 기준으로 안내되었습니다.</p>
+                                    <p class="text-sm text-slate-500 leading-relaxed">영월 숙박지로 이동합니다. 숙소는 영월 호텔 어라연 기준으로 안내되었습니다.</p>
                                 </div>
                             </div>
 
@@ -453,18 +453,19 @@
                 </div>
                 <div class="grid lg:grid-cols-2 gap-8 items-center">
                     <div class="bg-slate-50 border border-slate-100 rounded-[2rem] p-8">
-                        <h3 class="text-2xl font-bold text-slate-800 mb-3">탑스텐 동강시스타</h3>
-                        <p class="text-slate-600 leading-relaxed mb-4">1일차 숙박은 영월의 탑스텐 동강시스타 기준으로 반영했습니다. 객실 배정과 체크인 세부 안내는 최종 공지 때 별도 공유될 수 있습니다.</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-3">영월 호텔 어라연</h3>
+                        <p class="text-slate-600 leading-relaxed mb-4">1일차 숙박은 영월읍 중심의 호텔 어라연 기준으로 반영했습니다. 객실 배정과 체크인 세부 안내는 최종 공지 때 별도 공유될 수 있습니다.</p>
                         <div class="space-y-3 text-sm text-slate-600">
+                            <div class="flex items-start gap-3"><i class="fa-solid fa-location-dot text-amber-600 mt-1"></i><span>강원특별자치도 영월군 영월읍 은행나무4길 20-3</span></div>
                             <div class="flex items-start gap-3"><i class="fa-solid fa-bed text-amber-600 mt-1"></i><span>1박 숙박 · 9월 3일(목)</span></div>
                             <div class="flex items-start gap-3"><i class="fa-solid fa-utensils text-amber-600 mt-1"></i><span>석식 및 다음 날 조식 포함 일정</span></div>
-                            <div class="flex items-start gap-3"><i class="fa-solid fa-image text-amber-600 mt-1"></i><span>공식 홈페이지 대표 이미지를 기준으로 숙소 전경을 반영했습니다</span></div>
+                            <div class="flex items-start gap-3"><i class="fa-solid fa-phone text-amber-600 mt-1"></i><span>033-375-8880</span></div>
                         </div>
                     </div>
                     <div class="relative">
-                        <img src="assets/images/hotel.jpg" alt="탑스텐 동강시스타 전경" class="w-full h-[320px] object-cover rounded-[2rem] shadow-xl border border-slate-200">
+                        <img src="assets/images/hotel.jpg" alt="영월 호텔 어라연 전경" class="w-full h-[320px] object-cover rounded-[2rem] shadow-xl border border-slate-200">
                         <div class="absolute left-5 bottom-5 bg-white/90 backdrop-blur px-4 py-2 rounded-xl shadow font-bold text-slate-800">
-                            동강을 품은 영월 숙소
+                            영월읍 중심의 관광호텔
                         </div>
                     </div>
                 </div>
@@ -651,7 +652,7 @@
                             <li>■ 12:00~13:00 중식</li>
                             <li>■ 13:00~13:15 용연동굴 이동</li>
                             <li><span class="font-black" style="color:#004098;">■ 13:20~15:20 용연동굴 지질 탐사</span></li>
-                            <li>■ 15:30~17:00 영월 숙소 이동 (탑스텐 동강시스타)</li>
+                            <li>■ 15:30~17:00 영월 숙소 이동 (호텔 어라연)</li>
                             <li>■ 17:00~18:00 숙소 도착 후 석식</li>
                         </ul>
                     </td>
@@ -835,7 +836,7 @@
             const spots = {
                 taebaekMuseum: [37.0919, 128.9164],
                 yongyeon: [37.0514, 128.9268],
-                yeongwolStay: [37.1836, 128.4613],
+                yeongwolStay: [37.1790, 128.4643],
                 gossi: [37.2338, 128.4501],
                 baengnyong: [37.4206, 128.3804],
                 taebaekEnd: [37.1641, 128.9857]
@@ -853,7 +854,7 @@
             const markers = {
                 m1: L.marker(spots.taebaekMuseum, { icon: createIcon('#f97316', '🏛️') }).bindTooltip('태백고생대자연사박물관', { direction: 'top' }),
                 y1: L.marker(spots.yongyeon, { icon: createIcon('#f97316', '🕳️') }).bindTooltip('용연동굴', { direction: 'top' }),
-                s1: L.marker(spots.yeongwolStay, { icon: createIcon('#f97316', '🏨') }).bindTooltip('영월 숙소', { direction: 'top' }),
+                s1: L.marker(spots.yeongwolStay, { icon: createIcon('#f97316', '🏨') }).bindTooltip('영월 호텔 어라연', { direction: 'top' }),
                 g1: L.marker(spots.gossi, { icon: createIcon('#3b82f6', '🪨') }).bindTooltip('영월 고씨굴', { direction: 'top' }),
                 b1: L.marker(spots.baengnyong, { icon: createIcon('#3b82f6', '🌄') }).bindTooltip('평창 백룡동굴', { direction: 'top' }),
                 t2: L.marker(spots.taebaekEnd, { icon: createIcon('#3b82f6', '🚌') }).bindTooltip('태백 도착', { direction: 'top' })

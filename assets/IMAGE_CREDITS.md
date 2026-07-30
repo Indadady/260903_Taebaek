@@ -30,6 +30,6 @@
   - Local file: `assets/images/day2-baengnyong.jpg`
 
 - `hotel.jpg`
-  - Source: https://www.cistar.co.kr/
-  - File used: `img/content/main_slide_bg3.jpg`
+  - Source: https://hotelorayeon.jalib.site/
+  - File used: `data/home/main/home_main_17128026543pc.jpg`
   - Local file: `assets/images/hotel.jpg`
