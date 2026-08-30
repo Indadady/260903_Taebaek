@@ -24,7 +24,10 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+    <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
@@ -54,6 +57,7 @@
         @media (max-width: 768px){ .hero-bg { background-attachment: scroll; } }
         section { scroll-margin-top: 84px; }
         #map { height: 520px; width: 100%; border-radius: 1rem; z-index: 10; }
+        .leaflet-maplibre-gl { z-index: 0 !important; }
         .animate-fade-in-up { animation: fadeInUp 0.9s ease-out forwards; }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(24px); }
@@ -248,7 +252,7 @@
                         </div>
                         <div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 text-sm text-amber-800 leading-relaxed">
                             <i class="fa-solid fa-circle-info mr-1"></i>
-                            차량은 벤츠 스프린터입니다. 좌석 배정, 출발 세부 위치, 기사 연락처는 최종 안내 때 공유됩니다. 일정 중 권역 간 장거리 이동이 포함되어 있어 탑승 전 개인 물품을 꼭 확인해 주세요.
+                            차량은 벤츠 스프린터입니다. 차량승무원 김성만 (<a href="tel:010-3015-4184" class="font-bold underline">010-3015-4184</a>)이 전 일정 동승합니다. 일정 중 권역 간 장거리 이동이 포함되어 있어 탑승 전 개인 물품을 꼭 확인해 주세요.
                         </div>
                     </div>
                 </div>
@@ -524,11 +528,11 @@
                     </div>
                     <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-blue-50 transition-all">
                         <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-5 shadow-sm">
-                            <i class="fa-solid fa-user-group text-blue-600 text-2xl"></i>
+                            <i class="fa-solid fa-van-shuttle text-blue-600 text-2xl"></i>
                         </div>
-                        <h4 class="font-bold text-xl text-slate-800">현지 가이드</h4>
-                        <p class="text-sm text-slate-500 mt-1 mb-5">답사 현장 진행 협조</p>
-                        <span class="bg-blue-100 text-blue-700 px-8 py-3 rounded-xl font-bold">현지 가이드 · 미정</span>
+                        <h4 class="font-bold text-xl text-slate-800">차량승무원</h4>
+                        <p class="text-sm text-slate-500 mt-1 mb-5">전세 차량 동승 및 현장 지원</p>
+                        <a href="tel:010-3015-4184" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-md hover:bg-blue-700 transition">김성만: 010-3015-4184</a>
                     </div>
                 </div>
             </div>
@@ -644,7 +648,7 @@
         <div class="mt-4 pt-2 flex flex-wrap justify-between items-center gap-2 text-xs font-bold text-slate-700 print-contacts">
             <span>대표 이재명 010-9443-7881</span>
             <span>현장 조혁 이사 010-4249-4026</span>
-            <span>현지 가이드 · 미정</span>
+            <span>차량승무원 김성만 010-3015-4184</span>
         </div>
         <div class="mt-3 flex justify-between items-center">
             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" style="height: 20px;" alt="Tourmaker">
@@ -793,7 +797,18 @@
             };
             allSpots = spots;
             currentMap = L.map('map', { scrollWheelZoom: false });
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(currentMap);
+            // Carto 공개 타일은 키 없이 요청하면 타일 위에 "API key required"가 찍힘.
+            // 고한중 가이드북과 같이 OpenFreeMap Positron(키 없음)을 쓰고, 실패 시 Esri 공개 타일로 넘김.
+            if (typeof L.maplibreGL === 'function') {
+                L.maplibreGL({
+                    style: 'https://tiles.openfreemap.org/styles/positron'
+                }).addTo(currentMap);
+            } else {
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                    maxZoom: 19,
+                    attribution: 'Tiles &copy; Esri'
+                }).addTo(currentMap);
+            }
 
             const createIcon = (color, emoji) => L.divIcon({
                 className: 'custom-icon',
