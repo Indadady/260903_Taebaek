@@ -106,8 +106,12 @@
             body { background: white !important; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .print\:hidden, header, footer, section:not(#print-area), .no-print, #toast, #custom-confirm { display: none !important; }
             #print-area { display: block !important; }
-            table td, table th { word-break: keep-all; padding: 6px !important; }
+            table td, table th { word-break: keep-all; padding: 5px !important; }
             tr { page-break-inside: avoid; }
+            #print-area img.print-qr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .print-extra { page-break-inside: avoid; display: flex; align-items: stretch; gap: 12px; margin-top: 12px; }
+            .print-extra .print-pack { flex: 1; }
+            .print-extra .print-qr-box { width: 132px; flex-shrink: 0; }
         }
     </style>
 </head>
@@ -270,7 +274,7 @@
                     <button onclick="filterMap('day1')" id="btn-map-day1" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-orange-50 transition-all">1일차</button>
                     <button onclick="filterMap('day2')" id="btn-map-day2" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-blue-50 transition-all">2일차</button>
                 </div>
-                <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">전체 일정 — 태백 출발부터 영월·평창을 거쳐 다시 자연사박물관으로 돌아오는 경로를 보여줍니다</p>
+                <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">전체 일정 — 확정 식당·호텔을 포함한 태백·영월·평창 왕복 경로입니다</p>
                 <div class="max-w-5xl mx-auto border-8 border-slate-100 rounded-[2.5rem] shadow-xl overflow-hidden bg-white relative z-10">
                     <div id="map"></div>
                     <div class="absolute top-4 left-4 z-[400] bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl shadow font-bold text-xs text-slate-700 pointer-events-none">
@@ -278,8 +282,8 @@
                     </div>
                 </div>
                 <div class="max-w-5xl mx-auto mt-6 flex flex-wrap justify-center gap-6 text-[11px] font-bold text-slate-500">
-                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#f97316]"></span>1일차(태백 → 용연동굴 → 영월)</div>
-                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>2일차(영월 → 고씨굴 → 백룡동굴 → 자연사박물관)</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#f97316]"></span>1일차(박물관 → 다복한정식 → 용연동굴 → 호텔 어라연 → 토담)</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>2일차(호텔 → 고씨굴 → 강원토속식당 → 백룡동굴 → 자연사박물관)</div>
                 </div>
             </div>
         </section>
@@ -320,6 +324,7 @@
                                     <p class="text-xs font-black text-amber-700 tracking-widest">12:15 ~ 13:30 · 중식</p>
                                     <h4 class="font-bold text-lg text-slate-800">점심 식사 · 다복한정식</h4>
                                     <p class="text-sm text-slate-500 leading-relaxed">박물관 일정을 마친 뒤 태백 다복한정식에서 한정식을 드십니다.</p>
+                                    <p class="text-xs text-slate-400 mt-1">태백시 장성로 36 · 033-581-6600</p>
                                 </div>
                             </div>
 
@@ -345,6 +350,7 @@
                                     <p class="text-xs font-black text-violet-600 tracking-widest">18:00 · 석식</p>
                                     <h4 class="font-bold text-lg text-slate-800">저녁 식사 · 영월 토담 삼겹살</h4>
                                     <p class="text-sm text-slate-500 leading-relaxed">숙소 도착 후 영월 토담에서 삼겹살을 드신 뒤 휴식을 취합니다.</p>
+                                    <p class="text-xs text-slate-400 mt-1">영월읍 하송로 103-4 · 033-374-5362</p>
                                 </div>
                             </div>
                         </div>
@@ -381,6 +387,7 @@
                                     <p class="text-xs font-black text-amber-700 tracking-widest">11:30 ~ 12:10 · 중식</p>
                                     <h4 class="font-bold text-lg text-slate-800">점심 식사 · 강원토속식당</h4>
                                     <p class="text-sm text-slate-500 leading-relaxed">칡국수 또는 칡비빔국수와 감자전(2인 1개)을 드십니다.</p>
+                                    <p class="text-xs text-slate-400 mt-1">고씨굴 앞 · 김삿갓면 영월동로 1121-16 · 033-372-9014</p>
                                 </div>
                             </div>
 
@@ -645,7 +652,27 @@
                 </tr>
             </tbody>
         </table>
-        <div class="mt-4 pt-2 flex flex-wrap justify-between items-center gap-2 text-xs font-bold text-slate-700 print-contacts">
+        <div class="print-extra">
+            <div class="print-pack border-2 border-black p-3">
+                <p class="text-[12px] font-black mb-2">현장 준비물</p>
+                <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px] font-medium">
+                    <div>□ 신분증</div>
+                    <div>□ 긴팔 겉옷</div>
+                    <div>□ 편한 운동화</div>
+                    <div>□ 우산 또는 우비</div>
+                    <div>□ 개인 상비약</div>
+                    <div>□ 물통 또는 생수</div>
+                    <div>□ 필기도구</div>
+                    <div>□ 보조배터리</div>
+                </div>
+            </div>
+            <div class="print-qr-box border-2 border-black p-2 text-center flex flex-col items-center justify-center">
+                <img src="assets/images/guidebook-qr.png" alt="스마트 가이드북 QR" class="print-qr" style="width: 108px; height: 108px;">
+                <p class="text-[10px] font-black mt-1 leading-tight">스마트 가이드북</p>
+                <p class="text-[9px] text-gray-600 leading-tight">카메라로 스캔</p>
+            </div>
+        </div>
+        <div class="mt-3 pt-2 flex flex-wrap justify-between items-center gap-2 text-xs font-bold text-slate-700 print-contacts">
             <span>대표 이재명 010-9443-7881</span>
             <span>현장 조혁 이사 010-4249-4026</span>
             <span>차량승무원 김성만 010-3015-4184</span>
@@ -780,9 +807,9 @@
         let animToken = 0;
         let travelerMarker = null;
         const mapHints = {
-            all: '전체 일정 — 태백 출발부터 영월·평창을 거쳐 다시 자연사박물관으로 돌아오는 경로를 보여줍니다',
-            day1: '1일차 동선 — 태백 박물관 → 용연동굴 → 영월 숙소',
-            day2: '2일차 동선 — 영월 고씨굴 → 평창 백룡동굴 → 자연사박물관'
+            all: '전체 일정 — 확정 식당·호텔을 포함한 태백·영월·평창 왕복 경로입니다',
+            day1: '1일차 동선 — 박물관 → 다복한정식 → 용연동굴 → 호텔 어라연 → 토담',
+            day2: '2일차 동선 — 호텔 어라연 → 고씨굴 → 강원토속식당 → 백룡동굴 → 자연사박물관'
         };
 
         function initMap() {
@@ -790,10 +817,13 @@
             mapInited = true;
             const spots = {
                 taebaekMuseum: [37.0919, 128.9164],
+                dabok: [37.1018, 129.0095],
                 yongyeon: [37.0514, 128.9268],
-                yeongwolStay: [37.1790, 128.4643],
-                gossi: [37.2338, 128.4501],
-                baengnyong: [37.4206, 128.3804]
+                yeongwolStay: [37.1803, 128.4641],
+                todam: [37.1818, 128.4630],
+                gossi: [37.1293, 128.5329],
+                gangwonSikdang: [37.1303, 128.5364],
+                baengnyong: [37.2778, 128.5769]
             };
             allSpots = spots;
             currentMap = L.map('map', { scrollWheelZoom: false });
@@ -818,20 +848,23 @@
 
             const markers = {
                 m1: L.marker(spots.taebaekMuseum, { icon: createIcon('#f97316', '🏛️') }).bindTooltip('태백고생대자연사박물관', { direction: 'top' }),
+                f1: L.marker(spots.dabok, { icon: createIcon('#f59e0b', '🍱') }).bindTooltip('다복한정식 (1일차 중식)', { direction: 'top' }),
                 y1: L.marker(spots.yongyeon, { icon: createIcon('#f97316', '🕳️') }).bindTooltip('용연동굴', { direction: 'top' }),
                 s1: L.marker(spots.yeongwolStay, { icon: createIcon('#f97316', '🏨') }).bindTooltip('영월 호텔 어라연', { direction: 'top' }),
+                f2: L.marker(spots.todam, { icon: createIcon('#f59e0b', '🍖') }).bindTooltip('영월 토담 삼겹살 (1일차 석식)', { direction: 'top' }),
                 g1: L.marker(spots.gossi, { icon: createIcon('#3b82f6', '🪨') }).bindTooltip('영월 고씨굴', { direction: 'top' }),
+                f3: L.marker(spots.gangwonSikdang, { icon: createIcon('#6366f1', '🍜') }).bindTooltip('강원토속식당 (2일차 중식)', { direction: 'top' }),
                 b1: L.marker(spots.baengnyong, { icon: createIcon('#3b82f6', '🌄') }).bindTooltip('평창 백룡동굴', { direction: 'top' })
             };
 
             routePaths = {
-                d1: L.polyline([spots.taebaekMuseum, spots.yongyeon, spots.yeongwolStay], { color: '#f97316', weight: 5, opacity: 0.9 }),
-                d2: L.polyline([spots.yeongwolStay, spots.gossi, spots.baengnyong, spots.taebaekMuseum], { color: '#3b82f6', weight: 5, opacity: 0.9 })
+                d1: L.polyline([spots.taebaekMuseum, spots.dabok, spots.yongyeon, spots.yeongwolStay, spots.todam], { color: '#f97316', weight: 5, opacity: 0.9 }),
+                d2: L.polyline([spots.yeongwolStay, spots.gossi, spots.gangwonSikdang, spots.baengnyong, spots.taebaekMuseum], { color: '#3b82f6', weight: 5, opacity: 0.9 })
             };
 
             dayLayers = {
-                day1: L.layerGroup([routePaths.d1, markers.m1, markers.y1, markers.s1]),
-                day2: L.layerGroup([routePaths.d2, markers.s1, markers.g1, markers.b1, markers.m1])
+                day1: L.layerGroup([routePaths.d1, markers.m1, markers.f1, markers.y1, markers.s1, markers.f2]),
+                day2: L.layerGroup([routePaths.d2, markers.s1, markers.g1, markers.f3, markers.b1, markers.m1])
             };
             filterMap('all');
         }
