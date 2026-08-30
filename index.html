@@ -72,11 +72,30 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .motion-float { animation: pulseSoft 4s ease-in-out infinite; }
+        .custom-icon { position: relative; }
         .custom-icon div {
+            position: relative;
             box-shadow: 0 12px 24px rgba(15,23,42,0.18);
             border: 2.5px solid rgba(255,255,255,0.95);
-            animation: floatIn .45s ease-out forwards;
+            animation: floatIn .2s ease-out forwards;
         }
+        .map-pin-badge {
+            position: absolute;
+            top: -11px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #004098;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.2;
+            padding: 2px 5px;
+            border-radius: 999px;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,64,152,0.25);
+        }
+        .map-pin-badge.end { background: #b45309; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .schedule-thumb {
@@ -234,12 +253,12 @@
                             <div class="w-12 h-12 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center text-2xl"><i class="fa-solid fa-van-shuttle"></i></div>
                             <div>
                                 <h3 class="font-black text-xl text-slate-800">1박 2일 권역 이동</h3>
-                                <p class="text-sm font-bold text-slate-500">벤츠 스프린터 · 태백 → 용연동굴 → 영월 숙소 → 고씨굴 → 백룡동굴 → 자연사박물관</p>
+                                <p class="text-sm font-bold text-slate-500">출발·도착 태백고생대자연사박물관 · 벤츠 스프린터</p>
                             </div>
                         </div>
                         <div class="grid md:grid-cols-3 gap-4">
                             <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">1일차 시작</p>
+                                <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">출발지</p>
                                 <p class="text-3xl font-black text-slate-800">10:00</p>
                                 <p class="text-sm font-bold text-slate-500 mt-1">태백고생대자연사박물관 집결</p>
                             </div>
@@ -249,9 +268,9 @@
                                 <p class="text-sm font-bold text-slate-500 mt-1">전 일정 권역 이동</p>
                             </div>
                             <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">2일차 종료</p>
+                                <p class="text-[10px] font-black text-rose-600 uppercase tracking-widest mb-1">도착지</p>
                                 <p class="text-3xl font-black text-slate-800">17:30</p>
-                                <p class="text-sm font-bold text-slate-500 mt-1">자연사박물관 도착 후 해산</p>
+                                <p class="text-sm font-bold text-slate-500 mt-1">고생대박물관 도착 후 해산</p>
                             </div>
                         </div>
                         <div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 text-sm text-amber-800 leading-relaxed">
@@ -267,23 +286,25 @@
             <div class="container mx-auto px-4">
                 <div class="text-center mb-10">
                     <h2 class="text-3xl font-bold text-slate-800 font-title tracking-tight">한눈에 보는 답사 동선</h2>
-                    <p class="text-slate-500 mt-2 text-sm italic">마커에 마우스를 올리면 장소명을 확인할 수 있습니다.</p>
+                    <p class="text-slate-500 mt-2 text-sm italic">1일차를 누르면 이동 동선이 이어집니다. 마커에 마우스를 올리면 장소명을 확인할 수 있습니다.</p>
                 </div>
-                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                <div class="flex flex-wrap justify-center gap-2 mb-3">
                     <button onclick="filterMap('all')" id="btn-map-all" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-slate-800 text-white shadow-lg transition-all">전체 일정</button>
                     <button onclick="filterMap('day1')" id="btn-map-day1" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-orange-50 transition-all">1일차</button>
                     <button onclick="filterMap('day2')" id="btn-map-day2" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-blue-50 transition-all">2일차</button>
                 </div>
-                <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">전체 일정 — 확정 식당·호텔을 포함한 태백·영월·평창 왕복 경로입니다</p>
+                <p class="text-center text-[11px] font-black text-[#004098] mb-2">출발 · 도착 · 태백고생대자연사박물관</p>
+                <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">전체 일정 — 고생대박물관에서 출발해 다시 박물관으로 돌아오는 경로입니다</p>
                 <div class="max-w-5xl mx-auto border-8 border-slate-100 rounded-[2.5rem] shadow-xl overflow-hidden bg-white relative z-10">
                     <div id="map"></div>
-                    <div class="absolute top-4 left-4 z-[400] bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl shadow font-bold text-xs text-slate-700 pointer-events-none">
-                        <i class="fa-solid fa-map-location-dot text-orange-500 mr-1"></i> 동선 렌더링 중...
+                    <div id="map-status" class="absolute top-4 left-4 z-[400] bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl shadow font-bold text-xs text-slate-700 pointer-events-none">
+                        <i class="fa-solid fa-flag-checkered text-orange-500 mr-1"></i><span id="map-status-text">출발·도착 · 태백고생대자연사박물관</span>
                     </div>
                 </div>
                 <div class="max-w-5xl mx-auto mt-6 flex flex-wrap justify-center gap-6 text-[11px] font-bold text-slate-500">
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#004098]"></span>출발·도착 고생대박물관</div>
                     <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#f97316]"></span>1일차(박물관 → 다복한정식 → 용연동굴 → 호텔 어라연 → 토담)</div>
-                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>2일차(호텔 → 고씨굴 → 강원토속식당 → 백룡동굴 → 자연사박물관)</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>2일차(호텔 → 고씨굴 → 강원토속식당 → 백룡동굴 → 박물관 도착)</div>
                 </div>
             </div>
         </section>
@@ -403,8 +424,8 @@
                             <div class="schedule-media">
                                 <div class="schedule-desc space-y-1">
                                     <p class="text-xs font-black text-slate-800 tracking-widest">17:30</p>
-                                    <h4 class="font-bold text-lg text-slate-800">자연사박물관 도착 후 해산</h4>
-                                    <p class="text-sm text-slate-500 leading-relaxed">백룡동굴 탐사를 마친 뒤 태백고생대자연사박물관에 도착하고 심화교육을 종료합니다.</p>
+                                    <h4 class="font-bold text-lg text-slate-800">도착 · 고생대박물관 해산</h4>
+                                    <p class="text-sm text-slate-500 leading-relaxed">백룡동굴 탐사를 마친 뒤 출발지인 태백고생대자연사박물관에 도착하고 심화교육을 종료합니다.</p>
                                 </div>
                             </div>
                         </div>
@@ -804,13 +825,21 @@
         let currentMap = null;
         let allSpots = {};
         let routePaths = {};
+        let routeFull = {};
+        let routeStops = {};
         let animToken = 0;
         let travelerMarker = null;
         const mapHints = {
-            all: '전체 일정 — 확정 식당·호텔을 포함한 태백·영월·평창 왕복 경로입니다',
-            day1: '1일차 동선 — 박물관 → 다복한정식 → 용연동굴 → 호텔 어라연 → 토담',
-            day2: '2일차 동선 — 호텔 어라연 → 고씨굴 → 강원토속식당 → 백룡동굴 → 자연사박물관'
+            all: '전체 일정 — 고생대박물관에서 출발해 다시 박물관으로 돌아오는 경로입니다',
+            day1: '1일차 동선 — 고생대박물관(출발) → 다복한정식 → 용연동굴 → 호텔 어라연 → 토담',
+            day2: '2일차 동선 — 호텔 어라연 → 고씨굴 → 강원토속식당 → 백룡동굴 → 고생대박물관(도착)'
         };
+        const ROUTE_MS = { d1: 1100, d2: 1200 };
+
+        function setMapStatus(text) {
+            const el = document.getElementById('map-status-text');
+            if (el) el.textContent = text;
+        }
 
         function initMap() {
             if (mapInited || !window.L) return;
@@ -827,8 +856,6 @@
             };
             allSpots = spots;
             currentMap = L.map('map', { scrollWheelZoom: false });
-            // Carto 공개 타일은 키 없이 요청하면 타일 위에 "API key required"가 찍힘.
-            // 고한중 가이드북과 같이 OpenFreeMap Positron(키 없음)을 쓰고, 실패 시 Esri 공개 타일로 넘김.
             if (typeof L.maplibreGL === 'function') {
                 L.maplibreGL({
                     style: 'https://tiles.openfreemap.org/styles/positron'
@@ -840,14 +867,14 @@
                 }).addTo(currentMap);
             }
 
-            const createIcon = (color, emoji) => L.divIcon({
+            const createIcon = (color, emoji, badge) => L.divIcon({
                 className: 'custom-icon',
-                html: `<div style="background-color:${color}; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px;">${emoji}</div>`,
-                iconSize: [36, 36], iconAnchor: [18, 18], tooltipAnchor: [0, -18]
+                html: `<div style="background-color:${color}; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px;">${emoji}${badge ? `<span class="map-pin-badge">${badge}</span>` : ''}</div>`,
+                iconSize: [36, 36], iconAnchor: [18, 18], tooltipAnchor: [0, -22]
             });
 
             const markers = {
-                m1: L.marker(spots.taebaekMuseum, { icon: createIcon('#f97316', '🏛️') }).bindTooltip('태백고생대자연사박물관', { direction: 'top' }),
+                m1: L.marker(spots.taebaekMuseum, { icon: createIcon('#004098', '🏛️', '출발·도착') }).bindTooltip('출발·도착 · 태백고생대자연사박물관', { direction: 'top' }),
                 f1: L.marker(spots.dabok, { icon: createIcon('#f59e0b', '🍱') }).bindTooltip('다복한정식 (1일차 중식)', { direction: 'top' }),
                 y1: L.marker(spots.yongyeon, { icon: createIcon('#f97316', '🕳️') }).bindTooltip('용연동굴', { direction: 'top' }),
                 s1: L.marker(spots.yeongwolStay, { icon: createIcon('#f97316', '🏨') }).bindTooltip('영월 호텔 어라연', { direction: 'top' }),
@@ -857,9 +884,29 @@
                 b1: L.marker(spots.baengnyong, { icon: createIcon('#3b82f6', '🌄') }).bindTooltip('평창 백룡동굴', { direction: 'top' })
             };
 
+            routeFull = {
+                d1: [spots.taebaekMuseum, spots.dabok, spots.yongyeon, spots.yeongwolStay, spots.todam],
+                d2: [spots.yeongwolStay, spots.gossi, spots.gangwonSikdang, spots.baengnyong, spots.taebaekMuseum]
+            };
+            routeStops = {
+                d1: [
+                    { marker: markers.m1, label: '출발 · 고생대박물관' },
+                    { marker: markers.f1, label: '다복한정식' },
+                    { marker: markers.y1, label: '용연동굴' },
+                    { marker: markers.s1, label: '호텔 어라연' },
+                    { marker: markers.f2, label: '토담 삼겹살' }
+                ],
+                d2: [
+                    { marker: markers.s1, label: '호텔 어라연' },
+                    { marker: markers.g1, label: '고씨굴' },
+                    { marker: markers.f3, label: '강원토속식당' },
+                    { marker: markers.b1, label: '백룡동굴' },
+                    { marker: markers.m1, label: '도착 · 고생대박물관' }
+                ]
+            };
             routePaths = {
-                d1: L.polyline([spots.taebaekMuseum, spots.dabok, spots.yongyeon, spots.yeongwolStay, spots.todam], { color: '#f97316', weight: 5, opacity: 0.9 }),
-                d2: L.polyline([spots.yeongwolStay, spots.gossi, spots.gangwonSikdang, spots.baengnyong, spots.taebaekMuseum], { color: '#3b82f6', weight: 5, opacity: 0.9 })
+                d1: L.polyline(routeFull.d1, { color: '#f97316', weight: 5, opacity: 0.95 }),
+                d2: L.polyline(routeFull.d2, { color: '#3b82f6', weight: 5, opacity: 0.95 })
             };
 
             dayLayers = {
@@ -875,86 +922,85 @@
                 travelerMarker = null;
             }
         }
-        function latLngAlong(latlngs, t) {
-            if (!latlngs.length) return null;
-            if (t <= 0) return L.latLng(latlngs[0]);
-            if (t >= 1) return L.latLng(latlngs[latlngs.length - 1]);
-            let total = 0; const segs = [];
+        function routeMetrics(latlngs) {
+            const segs = [];
+            let total = 0;
             for (let i = 0; i < latlngs.length - 1; i++) {
-                const a = L.latLng(latlngs[i]); const b = L.latLng(latlngs[i + 1]);
-                const d = a.distanceTo(b); segs.push({ a, b, d }); total += d;
+                const a = L.latLng(latlngs[i]);
+                const b = L.latLng(latlngs[i + 1]);
+                const d = a.distanceTo(b);
+                segs.push({ a, b, d });
+                total += d;
             }
-            let remain = total * t;
-            for (const s of segs) {
-                if (remain <= s.d || s.d === 0) {
-                    const r = s.d ? remain / s.d : 0;
-                    return L.latLng(s.a.lat + (s.b.lat - s.a.lat) * r, s.a.lng + (s.b.lng - s.a.lng) * r);
-                }
-                remain -= s.d;
-            }
-            return L.latLng(latlngs[latlngs.length - 1]);
+            const vertexAt = [0];
+            let acc = 0;
+            for (const s of segs) { acc += s.d; vertexAt.push(acc); }
+            return { segs, total, vertexAt };
         }
-        function animateTraveler(latlngs, duration, token, color) {
+        function pointsUpTo(latlngs, t) {
+            const { segs, total } = routeMetrics(latlngs);
+            if (!segs.length) return [latlngs[0]];
+            const target = total * Math.min(1, Math.max(0, t));
+            const pts = [latlngs[0]];
+            let remain = target;
+            for (const s of segs) {
+                if (remain >= s.d || s.d === 0) {
+                    pts.push([s.b.lat, s.b.lng]);
+                    remain -= s.d;
+                } else {
+                    const r = s.d ? remain / s.d : 0;
+                    pts.push([s.a.lat + (s.b.lat - s.a.lat) * r, s.a.lng + (s.b.lng - s.a.lng) * r]);
+                    break;
+                }
+            }
+            return pts;
+        }
+        function animateDrawnRoute(key, duration, token, color) {
             return new Promise(resolve => {
-                if (!latlngs || latlngs.length < 2) { resolve(); return; }
+                const full = routeFull[key];
+                const layer = routePaths[key];
+                const stops = routeStops[key] || [];
+                if (!full || !layer || full.length < 2) { resolve(); return; }
+                const { vertexAt, total } = routeMetrics(full);
+                layer.setLatLngs([full[0]]);
                 clearTraveler();
-                travelerMarker = L.circleMarker(L.latLng(latlngs[0]), { radius: 8, color: '#fff', weight: 3, fillColor: color, fillOpacity: 1 }).addTo(currentMap);
+                travelerMarker = L.circleMarker(L.latLng(full[0]), { radius: 8, color: '#fff', weight: 3, fillColor: color, fillOpacity: 1 }).addTo(currentMap);
+                setMapStatus(stops[0] ? stops[0].label : '이동 중');
+                let revealed = 1;
                 const t0 = performance.now();
                 function frame(now) {
-                    if (token !== animToken) { clearTraveler(); resolve(); return; }
+                    if (token !== animToken) { resolve(); return; }
                     const p = Math.min(1, (now - t0) / duration);
-                    const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-                    const ll = latLngAlong(latlngs, eased);
-                    if (ll) travelerMarker.setLatLng(ll);
-                    if (p < 1) requestAnimationFrame(frame); else resolve();
+                    const drawn = pointsUpTo(full, p);
+                    layer.setLatLngs(drawn);
+                    const tip = drawn[drawn.length - 1];
+                    if (travelerMarker && tip) travelerMarker.setLatLng(L.latLng(tip));
+                    const dist = total * p;
+                    while (revealed < stops.length && dist >= vertexAt[revealed] - 1) {
+                        const stop = stops[revealed];
+                        if (stop) setMapStatus(stop.label);
+                        revealed += 1;
+                    }
+                    if (p < 1) requestAnimationFrame(frame);
+                    else {
+                        layer.setLatLngs(full);
+                        resolve();
+                    }
                 }
                 requestAnimationFrame(frame);
-            });
-        }
-        function animatePath(layer, duration, token) {
-            return new Promise(resolve => {
-                const run = () => {
-                    if (token !== animToken) { resolve(); return; }
-                    const path = layer._path;
-                    if (!path) { resolve(); return; }
-                    const len = path.getTotalLength();
-                    path.style.transition = 'none';
-                    path.style.strokeDasharray = `${len}`;
-                    path.style.strokeDashoffset = `${len}`;
-                    void path.getBoundingClientRect();
-                    path.style.transition = `stroke-dashoffset ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`;
-                    path.style.strokeDashoffset = '0';
-                    setTimeout(() => {
-                        if (token === animToken) {
-                            path.style.transition = '';
-                            path.style.strokeDasharray = '';
-                            path.style.strokeDashoffset = '';
-                        }
-                        resolve();
-                    }, duration + 40);
-                };
-                requestAnimationFrame(() => setTimeout(run, 40));
             });
         }
         async function playRouteAnimation(keys, token) {
             for (const key of keys) {
                 if (token !== animToken) return;
-                const layer = routePaths[key];
-                if (!layer) continue;
-                const latlngs = layer.getLatLngs().map(ll => [ll.lat, ll.lng]);
-                const duration = key === 'd1' ? 2400 : 3000;
                 const color = key === 'd1' ? '#f97316' : '#3b82f6';
-                await Promise.all([animatePath(layer, duration, token), animateTraveler(latlngs, duration, token, color)]);
+                await animateDrawnRoute(key, ROUTE_MS[key] || 1100, token, color);
             }
-            if (token === animToken) setTimeout(clearTraveler, 400);
-        }
-        function popMarkers(layerGroup, token) {
-            layerGroup.eachLayer(layer => {
-                if (!(layer instanceof L.Marker)) return;
-                const originalIcon = layer.options.icon;
-                layer.setIcon(L.divIcon({ className: 'hidden' }));
-                setTimeout(() => { if (token === animToken) layer.setIcon(originalIcon); }, 50);
-            });
+            if (token === animToken) {
+                const last = keys[keys.length - 1];
+                if (last === 'd2' || keys.length > 1) setMapStatus('도착 · 태백고생대자연사박물관');
+                setTimeout(() => { if (token === animToken) clearTraveler(); }, 180);
+            }
         }
         window.filterMap = function(day) {
             if (!currentMap) return;
@@ -978,25 +1024,19 @@
                 Object.values(dayLayers).forEach(l => l.addTo(currentMap));
                 targetBounds = L.latLngBounds(Object.values(allSpots));
                 keys = ['d1', 'd2'];
-                Object.values(dayLayers).forEach(l => popMarkers(l, token));
                 currentMap.fitBounds(targetBounds, { padding: [50, 50], maxZoom: 8 });
+                setMapStatus('출발 · 고생대박물관');
             } else {
                 dayLayers[day].addTo(currentMap);
                 targetBounds = dayLayers[day].getBounds();
                 keys = [day === 'day1' ? 'd1' : 'd2'];
-                popMarkers(dayLayers[day], token);
-                currentMap.fitBounds(targetBounds, { padding: [50, 50], maxZoom: 11 });
+                currentMap.fitBounds(targetBounds, { padding: [48, 48], maxZoom: 11 });
+                setMapStatus(day === 'day1' ? '1일차 이동 시작 · 고생대박물관' : '2일차 이동 시작 · 호텔 어라연');
             }
             keys.forEach(k => {
-                const el = routePaths[k] && routePaths[k]._path;
-                if (el) {
-                    const len = el.getTotalLength ? el.getTotalLength() : 1000;
-                    el.style.transition = 'none';
-                    el.style.strokeDasharray = `${len}`;
-                    el.style.strokeDashoffset = `${len}`;
-                }
+                if (routePaths[k] && routeFull[k]) routePaths[k].setLatLngs([routeFull[k][0]]);
             });
-            setTimeout(() => playRouteAnimation(keys, token), 280);
+            requestAnimationFrame(() => playRouteAnimation(keys, token));
         };
         const io = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) { initMap(); io.disconnect(); }
